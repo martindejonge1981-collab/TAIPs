@@ -13,7 +13,7 @@ The purpose of TAIPs is to provide the community with a means to propose enhance
 - [Message Types and Data Structures](./messages.md) - Comprehensive documentation of all TAP message types and data structures
 - [Developer Resources](./developers.md) - Quick start guide for developers with examples and usage instructions
 - [JSON Schemas](./schemas/) - Machine-readable JSON Schema definitions for all TAP messages
-- [TypeScript Types](./packages/typescript/) - TypeScript type definitions (`@taprsvp/types` npm package)
+- [TypeScript Types](https://github.com/TransactionAuthorizationProtocol/tap-ts) - TypeScript type definitions (`@taprsvp/types` npm package)
 - [Changelog](./CHANGELOG.md) - History of structural changes, new TAIPs, and message format updates
 
 ## TAIP Statuses
@@ -43,6 +43,9 @@ The purpose of TAIPs is to provide the community with a means to propose enhance
 | 15   | [Agent Connection Protocol](./TAIPs/taip-15.md)                         |
 | 16   | [Invoices](./TAIPs/taip-16.md)                                         |
 | 17   | [Composable Escrow](./TAIPs/taip-17.md)                                |
+| 18   | [Asset Exchange](./TAIPs/taip-18.md)                                   |
+| 19   | [ISO 20022 Message Mapping](./TAIPs/taip-19.md)                        |
+| 20   | [On-Chain Transfer Correlation via Memo Hash](./TAIPs/taip-20.md)      |
 
 
 ## Implementation Resources
@@ -60,7 +63,8 @@ Example schemas:
 ### TypeScript Types
 Official TypeScript type definitions are available as an npm package:
 - **Package**: `@taprsvp/types`
-- **Source**: [./packages/typescript/](./packages/typescript/)
+- **Repository**: [TransactionAuthorizationProtocol/tap-ts](https://github.com/TransactionAuthorizationProtocol/tap-ts)
+- **NPM**: [@taprsvp/types](https://www.npmjs.com/package/@taprsvp/types)
 - **Installation**: `npm install @taprsvp/types`
 
 The package exports:

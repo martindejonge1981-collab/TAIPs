@@ -12,7 +12,9 @@ permalink: /messages/
 - [Transaction Message](#transaction-message)
   - [Transfer](#transfer)
   - [Payment](#payment)
-  - [Escrow](#escrow)
+  - [RFQ](#rfq)
+  - [Quote](#quote)
+  - [Lock](#lock)
 - [Authorization Flow Messages](#authorization-flow-messages)
   - [AuthorizationRequired](#authorizationrequired)
   - [Authorize](#authorize)
@@ -372,36 +374,36 @@ Initiates a payment request from a merchant to a customer.
 }
 ```
 
-### Exchange
-[TAIP-18] - Draft
+### RFQ
+[TAIP-18] - Review
 
 Requests a quote for exchanging assets between different types or chains. Enables cross-asset quotes (e.g., USDC to EURC, USD to USDC).
 
 | Attribute | Type | Required | Status | Description |
 |-----------|------|----------|---------|-------------|
-| @context | string | Yes | Draft ([TAIP-18]) | JSON-LD context "https://tap.rsvp/schema/1.0" |
-| @type | string | Yes | Draft ([TAIP-18]) | JSON-LD type "https://tap.rsvp/schema/1.0#Exchange" |
-| fromAssets | array of string | Yes | Draft ([TAIP-18]) | Available source assets (CAIP-19, DTI, or ISO-4217 currency codes) |
-| toAssets | array of string | Yes | Draft ([TAIP-18]) | Desired target assets (CAIP-19, DTI, or ISO-4217 currency codes) |
-| fromAmount | string | No | Draft ([TAIP-18]) | Amount of source asset to exchange. Either fromAmount or toAmount must be provided |
-| toAmount | string | No | Draft ([TAIP-18]) | Amount of target asset desired. Either fromAmount or toAmount must be provided |
-| requester | [Party](#party) | Yes | Draft ([TAIP-18]) | Party requesting the exchange |
-| provider | [Party](#party) | No | Draft ([TAIP-18]) | Optional preferred liquidity provider. When omitted, Exchange can be broadcast to multiple providers |
-| agents | array of [Agent](#agent) | Yes | Draft ([TAIP-18]) | Array of agents involved in the exchange request |
-| policies | array of [Policy](#policy) | No | Draft ([TAIP-18]) | Optional compliance or presentation requirements |
+| @context | string | Yes | Review ([TAIP-18]) | JSON-LD context "https://tap.rsvp/schema/1.0" |
+| @type | string | Yes | Review ([TAIP-18]) | JSON-LD type "https://tap.rsvp/schema/1.0#RFQ" |
+| fromAssets | array of string | Yes | Review ([TAIP-18]) | Available source assets (CAIP-19, DTI, or ISO-4217 currency codes) |
+| toAssets | array of string | Yes | Review ([TAIP-18]) | Desired target assets (CAIP-19, DTI, or ISO-4217 currency codes) |
+| fromAmount | string | No | Review ([TAIP-18]) | Amount of source asset to exchange. Either fromAmount or toAmount must be provided |
+| toAmount | string | No | Review ([TAIP-18]) | Amount of target asset desired. Either fromAmount or toAmount must be provided |
+| requester | [Party](#party) | Yes | Review ([TAIP-18]) | Party requesting the exchange |
+| provider | [Party](#party) | No | Review ([TAIP-18]) | Optional preferred liquidity provider. When omitted, RFQ can be broadcast to multiple providers |
+| agents | array of [Agent](#agent) | Yes | Review ([TAIP-18]) | Array of agents involved in the RFQ |
+| policies | array of [Policy](#policy) | No | Review ([TAIP-18]) | Optional compliance or presentation requirements |
 
 #### Example
 ```json
 {
-  "id": "exchange-request-123",
-  "type": "https://tap.rsvp/schema/1.0#Exchange",
+  "id": "rfq-123",
+  "type": "https://tap.rsvp/schema/1.0#RFQ",
   "from": "did:web:wallet.example",
   "to": ["did:web:lp.example"],
   "created_time": 1719226800,
   "expires_time": 1719313200,
   "body": {
     "@context": "https://tap.rsvp/schema/1.0",
-    "@type": "https://tap.rsvp/schema/1.0#Exchange",
+    "@type": "https://tap.rsvp/schema/1.0#RFQ",
     "fromAssets": ["eip155:1/erc20:0xA0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"],
     "toAssets": ["eip155:1/erc20:0xB00b00b00b00b00b00b00b00b00b00b00b00b00b"],
     "fromAmount": "1000.00",
@@ -432,21 +434,21 @@ Requests a quote for exchanging assets between different types or chains. Enable
 ```
 
 ### Quote
-[TAIP-18] - Draft
+[TAIP-18] - Review
 
-Response to an Exchange request providing pricing and terms. Sent by liquidity providers or orchestrators with specific rates.
+Response to an RFQ providing pricing and terms. Sent by liquidity providers or orchestrators with specific rates.
 
 | Attribute | Type | Required | Status | Description |
 |-----------|------|----------|---------|-------------|
-| @context | string | Yes | Draft ([TAIP-18]) | JSON-LD context "https://tap.rsvp/schema/1.0" |
-| @type | string | Yes | Draft ([TAIP-18]) | JSON-LD type "https://tap.rsvp/schema/1.0#Quote" |
-| fromAsset | string | Yes | Draft ([TAIP-18]) | Source asset for the exchange (CAIP-19, DTI, or ISO-4217 currency code) |
-| toAsset | string | Yes | Draft ([TAIP-18]) | Target asset for the exchange (CAIP-19, DTI, or ISO-4217 currency code) |
-| fromAmount | string | Yes | Draft ([TAIP-18]) | Amount of source asset to be exchanged |
-| toAmount | string | Yes | Draft ([TAIP-18]) | Amount of target asset to be received |
-| provider | [Party](#party) | Yes | Draft ([TAIP-18]) | Liquidity provider party information |
-| agents | array of [Agent](#agent) | Yes | Draft ([TAIP-18]) | Array of agents involved in the quote |
-| expiresAt | string | Yes | Draft ([TAIP-18]) | ISO 8601 timestamp when quote expires |
+| @context | string | Yes | Review ([TAIP-18]) | JSON-LD context "https://tap.rsvp/schema/1.0" |
+| @type | string | Yes | Review ([TAIP-18]) | JSON-LD type "https://tap.rsvp/schema/1.0#Quote" |
+| fromAsset | string | Yes | Review ([TAIP-18]) | Source asset for the exchange (CAIP-19, DTI, or ISO-4217 currency code) |
+| toAsset | string | Yes | Review ([TAIP-18]) | Target asset for the exchange (CAIP-19, DTI, or ISO-4217 currency code) |
+| fromAmount | string | Yes | Review ([TAIP-18]) | Amount of source asset to be exchanged |
+| toAmount | string | Yes | Review ([TAIP-18]) | Amount of target asset to be received |
+| provider | [Party](#party) | Yes | Review ([TAIP-18]) | Liquidity provider party information |
+| agents | array of [Agent](#agent) | Yes | Review ([TAIP-18]) | Array of agents involved in the quote |
+| expiresAt | string | Yes | Review ([TAIP-18]) | ISO 8601 timestamp when quote expires |
 
 #### Example
 ```json
@@ -455,7 +457,7 @@ Response to an Exchange request providing pricing and terms. Sent by liquidity p
   "type": "https://tap.rsvp/schema/1.0#Quote",
   "from": "did:web:lp.example",
   "to": ["did:web:wallet.example"],
-  "thid": "exchange-request-123",
+  "thid": "rfq-123",
   "created_time": 1719226850,
   "body": {
     "@context": "https://tap.rsvp/schema/1.0",
@@ -486,38 +488,38 @@ Response to an Exchange request providing pricing and terms. Sent by liquidity p
 }
 ```
 
-### Escrow
-[TAIP-17] - Draft
+### Lock
+[TAIP-17] - Review
 
 Requests an agent to hold assets in escrow on behalf of parties, enabling payment guarantees and asset swaps.
 
 | Attribute | Type | Required | Status | Description |
 |-----------|------|----------|---------|-------------|
-| @context | string | Yes | Draft ([TAIP-17]) | JSON-LD context "https://tap.rsvp/schema/1.0" |
-| @type | string | Yes | Draft ([TAIP-17]) | JSON-LD type "https://tap.rsvp/schema/1.0#Escrow" |
-| asset | string | No | Draft ([TAIP-17]) | CAIP-19 identifier for the specific cryptocurrency asset. Either asset OR currency must be present |
-| currency | string | No | Draft ([TAIP-17]) | ISO 4217 currency code for fiat-denominated escrows. Either asset OR currency must be present |
-| amount | string | Yes | Draft ([TAIP-17]) | Amount to be held in escrow (decimal string) |
-| originator | [Party](#party) | Yes | Draft ([TAIP-17]) | Party whose assets will be placed in escrow |
-| beneficiary | [Party](#party) | Yes | Draft ([TAIP-17]) | Party who will receive the assets when released |
-| expiry | string | Yes | Draft ([TAIP-17]) | ISO 8601 timestamp after which the escrow automatically expires |
-| agreement | string | No | Draft ([TAIP-17]) | URL or URI referencing the terms and conditions of the escrow |
-| agents | array of [Agent](#agent) | Yes | Draft ([TAIP-17]) | Array of agents involved in the escrow. Exactly one agent MUST have role "EscrowAgent" |
+| @context | string | Yes | Review ([TAIP-17]) | JSON-LD context "https://tap.rsvp/schema/1.0" |
+| @type | string | Yes | Review ([TAIP-17]) | JSON-LD type "https://tap.rsvp/schema/1.0#Lock" |
+| asset | string | No | Review ([TAIP-17]) | CAIP-19 identifier for the specific cryptocurrency asset. Either asset OR currency must be present |
+| currency | string | No | Review ([TAIP-17]) | ISO 4217 currency code for fiat-denominated escrows. Either asset OR currency must be present |
+| amount | string | Yes | Review ([TAIP-17]) | Amount to be held in escrow (decimal string) |
+| originator | [Party](#party) | Yes | Review ([TAIP-17]) | Party whose assets will be placed in escrow |
+| beneficiary | [Party](#party) | Yes | Review ([TAIP-17]) | Party who will receive the assets when released |
+| expiry | string | Yes | Review ([TAIP-17]) | ISO 8601 timestamp after which the escrow automatically expires |
+| agreement | string | No | Review ([TAIP-17]) | URL or URI referencing the terms and conditions of the escrow |
+| agents | array of [Agent](#agent) | Yes | Review ([TAIP-17]) | Array of agents involved in the escrow. Exactly one agent MUST have role "EscrowAgent" |
 
 #### Examples
 
-##### Payment guarantee escrow
+##### Payment guarantee lock
 ```json
 {
   "id": "123e4567-e89b-12d3-a456-426614174000",
-  "type": "https://tap.rsvp/schema/1.0#Escrow",
+  "type": "https://tap.rsvp/schema/1.0#Lock",
   "from": "did:web:merchant.example",
   "to": ["did:web:paymentprocessor.example"],
   "created_time": 1719226800,
   "expires_time": 1719313200,
   "body": {
     "@context": "https://tap.rsvp/schema/1.0",
-    "@type": "https://tap.rsvp/schema/1.0#Escrow",
+    "@type": "https://tap.rsvp/schema/1.0#Lock",
     "asset": "eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
     "amount": "100.00",
     "originator": {
@@ -546,16 +548,16 @@ Requests an agent to hold assets in escrow on behalf of parties, enabling paymen
 }
 ```
 
-##### Fiat currency escrow
+##### Fiat currency lock
 ```json
 {
   "id": "789e0123-e89b-12d3-a456-426614174003",
-  "type": "https://tap.rsvp/schema/1.0#Escrow",
+  "type": "https://tap.rsvp/schema/1.0#Lock",
   "from": "did:web:marketplace.example",
   "to": ["did:web:escrow.bank"],
   "body": {
     "@context": "https://tap.rsvp/schema/1.0",
-    "@type": "https://tap.rsvp/schema/1.0#Escrow",
+    "@type": "https://tap.rsvp/schema/1.0#Lock",
     "currency": "USD",
     "amount": "500.00",
     "originator": {
@@ -925,18 +927,18 @@ Requests a reversal of a settled transaction. This could be part of a dispute re
 ```
 
 ### Capture
-[TAIP-17] - Draft
+[TAIP-17] - Review
 
 Authorizes the release of escrowed funds to the beneficiary. Only agents acting for the beneficiary can send this message.
 
 | Attribute | Type | Required | Status | Description |
 |-----------|------|----------|---------|-------------|
-| @context | string | Yes | Draft ([TAIP-17]) | JSON-LD context "https://tap.rsvp/schema/1.0" |
-| @type | string | Yes | Draft ([TAIP-17]) | JSON-LD type "https://tap.rsvp/schema/1.0#Capture" |
-| amount | string | No | Draft ([TAIP-17]) | Amount to capture (decimal string). If omitted, captures full escrow amount. Must be ≤ original amount |
-| settlementAddress | string | No | Draft ([TAIP-17]) | Blockchain address for settlement. If omitted, uses address from earlier Authorize |
+| @context | string | Yes | Review ([TAIP-17]) | JSON-LD context "https://tap.rsvp/schema/1.0" |
+| @type | string | Yes | Review ([TAIP-17]) | JSON-LD type "https://tap.rsvp/schema/1.0#Capture" |
+| amount | string | No | Review ([TAIP-17]) | Amount to capture (decimal string). If omitted, captures full escrow amount. Must be ≤ original amount |
+| settlementAddress | string | No | Review ([TAIP-17]) | Blockchain address for settlement. If omitted, uses address from earlier Authorize |
 
-> **Note:** The message refers to the original Escrow message via the DIDComm `thid` (thread ID) in the message envelope.
+> **Note:** The message refers to the original Lock message via the DIDComm `thid` (thread ID) in the message envelope.
 
 #### Examples
 
